@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
+from fullname import Fullname
 import unittest
 
 
@@ -14,9 +15,9 @@ class TestAddGroup(unittest.TestCase):
     def test_add_group(self):
         wd = self.wd
         self.open_home_page(wd)
-        self.login(wd)
+        self.login(wd, username="admin", password="secret")
         self.open_add_new_page(wd)
-        self.add_firstname_middlename_lastname(wd)
+        self.add_firstname_middlename_lastname(wd, Fullname(name="name1", middlename="middlename1", lastname="lastname1"))
         self.add_nickname(wd)
         self.add_title(wd)
         self.add_company(wd)
@@ -150,30 +151,30 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("nickname").clear()
         wd.find_element_by_name("nickname").send_keys("nickname")
 
-    def add_firstname_middlename_lastname(self, wd):
+    def add_firstname_middlename_lastname(self, wd, fullname):
         # add firstname, middlename, lastname
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys("name1")
+        wd.find_element_by_name("firstname").send_keys(fullname.name)
         # add middlename
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys("middlename1")
+        wd.find_element_by_name("middlename").send_keys(fullname.middlename)
         # add lastname
         wd.find_element_by_name("lastname").click()
         wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys("lastname1")
+        wd.find_element_by_name("lastname").send_keys(fullname.lastname)
 
     def open_add_new_page(self, wd):
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd):
+    def login(self, wd, username, password):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def open_home_page(self, wd):
