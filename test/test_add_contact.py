@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
-from fullname import Fullname
-from application import Application
+from model.fullname import Fullname
+from fixture.application import Application
 
 
 @pytest.fixture
