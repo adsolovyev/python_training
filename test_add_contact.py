@@ -13,7 +13,7 @@ def app(request):
     
 def test_add_contact(app):
     app.login(username="admin", password="secret")
-    app.add_contact(Fullname(name="name_001", middlename="middlename_001", lastname="lastname_001"), nickname="test_nickname", email="email@1")
+    app.add_contact(Fullname(name="name_001", middlename="middlename_001", lastname="lastname_001"), nickname="test_nickname", email="email@1.long")
     app.logout()
 
 
