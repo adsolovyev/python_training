@@ -84,8 +84,6 @@ class ContactHelper:
         # go to groups page
         self.open_home_page()
 
-
-
     def return_to_home_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("groups").click()
