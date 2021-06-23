@@ -19,6 +19,6 @@ def test_add_contact_short_form(app):
     app.contact.create(Contact(firstname='firstname', middlename='middlename', lastname='lastname',
                                nickname='nickname', photo='', title='',
                                company='', address='', home='', mobile='', work='', fax='', email='email@1_short',
-                               email2='', email3='', homepage='', bday='-', bmonth='-', byear='', aday='', amonth='',
+                               email2='', email3='', homepage='', bday='-', bmonth='-', byear='', aday='-', amonth='-',
                                ayear='', address2='', phone2='', notes=''))
     app.session.logout()
