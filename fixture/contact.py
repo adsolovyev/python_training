@@ -1,4 +1,5 @@
 from selenium.webdriver.support.ui import Select
+from model.contact import Contact
 
 
 class ContactHelper:
@@ -13,7 +14,7 @@ class ContactHelper:
 
     def open_home_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith('/addressbook/') and len(wd.find_elements_by_name('searchstring')) > 0):
+        if not (wd.current_url.endswith("/addressbook") and len(wd.find_elements_by_id("MassCB")) > 0):
             wd.find_element_by_link_text("home").click()
 
     def return_to_home_page(self):
@@ -32,9 +33,9 @@ class ContactHelper:
         wd = self.app.wd
         self.open_home_page()
         wd.find_element_by_name("selected[]").click()
-        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
-        self.open_home_page()
+        self.return_to_home_page()
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
@@ -102,3 +103,14 @@ class ContactHelper:
         wd = self.app.wd
         self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.open_home_page()
+        contacts = []
+        for element in wd.find_elements_by_name("entry"):
+            firstname = element.find_elements_by_tag_name("td")[2].text
+            lastname = element.find_elements_by_tag_name("td")[1].text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+        return contacts
