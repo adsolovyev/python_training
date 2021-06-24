@@ -12,14 +12,9 @@ class ContactHelper:
         if not (wd.current_url.endswith('/edit.php') and len(wd.find_elements_by_name('photo')) > 0):
             wd.find_element_by_link_text("add new").click()
 
-    def open_home_page(self):
-        wd = self.app.wd
-        if not (wd.current_url.endswith("/addressbook") and len(wd.find_elements_by_id("MassCB")) > 0):
-            wd.find_element_by_link_text("home").click()
-
     def return_to_home_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith('/addressbook/') and len(wd.find_elements_by_name('searchstring')) > 0):
+        if not (wd.current_url.endswith('/addressbook/') and len(wd.find_elements_by_value("Send e-Mail")) > 0):
             wd.find_element_by_link_text("home").click()
 
     def create(self, contact):
@@ -28,23 +23,23 @@ class ContactHelper:
         self.fill_form(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_home_page()
+        self.contact_cache = None
 
     def delete_first_contact(self):
         wd = self.app.wd
-        self.open_home_page()
+        self.app.open_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
-        self.return_to_home_page()
+        self.contact_cache = None
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
-        self.open_home_page()
+        self.app.open_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_form(contact)
         wd.find_element_by_name("update").click()
-        self.open_home_page()
 
     def fill_form(self, contact):
         wd = self.app.wd
@@ -92,25 +87,29 @@ class ContactHelper:
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
-        self.open_home_page()
+        self.app.open_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_form(new_contact_data)
         wd.find_element_by_name("update").click()
-        self.return_to_home_page()
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd
-        self.open_home_page()
+        self.app.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.open_home_page()
-        contacts = []
-        for element in wd.find_elements_by_name("entry"):
-            firstname = element.find_elements_by_tag_name("td")[2].text
-            lastname = element.find_elements_by_tag_name("td")[1].text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.app.open_home_page()
+            self.contact_cache = []
+            for row in wd.find_elements_by_name("entry"):
+                cells = row.find_elements_by_tag_name("td")
+                firstname = cells[2].text
+                lastname = cells[1].text
+                id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
+        return list(self.contact_cache)
