@@ -16,8 +16,3 @@ def test_modify_some_contact(app):
     old_contacts[index] = contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
-
-# def test_add_contact_short_form(app):
-#    if app.contact.count() == 0:
-#        app.contact.create(Contact(firstname='test'))
-#    app.contact.create(Contact(nickname='nickname_modified', aday='27'))

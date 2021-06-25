@@ -40,14 +40,6 @@ class ContactHelper:
         wd.switch_to_alert().accept()
         self.contact_cache = None
 
-    def edit_first_contact(self, contact):
-        wd = self.app.wd
-        self.app.open_home_page()
-        wd.find_element_by_name("selected[]").click()
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self.fill_form(contact)
-        wd.find_element_by_name("update").click()
-
     def fill_form(self, contact):
         wd = self.app.wd
         self.change_field_value("firstname", contact.firstname)
