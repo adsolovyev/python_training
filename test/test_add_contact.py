@@ -11,7 +11,7 @@ def random_string(prefix, maxlen):
 
 
 def random_address(maxlen):
-    symbols = string.ascii_letters + string.digits + ' '*10 + string.punctuation
+    symbols = string.ascii_letters + string.digits
     return ''.join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 
