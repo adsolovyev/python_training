@@ -9,3 +9,11 @@ try:
         print(row)
 finally:
     connection.close()
+
+# try:
+#    cursor = connection.cursor()
+#    cursor.execute("select * from addressbook")
+#    for row in cursor.fetchall():
+#         print(row)
+# finally:
+#     connection.close()
