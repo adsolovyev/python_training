@@ -2,16 +2,16 @@ from model.group import Group
 import random
 
 
-def test_modify_group_name(app, db):
-    if len(db.get_group_list()) == 0:
-        app.group.create(Group(name='test'))
+def test_modify_some_group(app, db, check_ui):
+    app.group.create_if_no_groups(db)
     old_groups = db.get_group_list()
-    id = random.choice(old_groups)
-    group = Group(name='New_group_name')
-    group.id = id
-    app.group.modify_group_by_id(group.id, group)
-    assert len(old_groups) == app.group.count()
+    group = random.choice(old_groups)
+    index = old_groups.index(group)
+    new_group = Group(name="new_name", header="new_header", footer="new_footer")
+    app.group.modify_group_by_id(group.id, new_group)
     new_groups = db.get_group_list()
-    old_groups[id] = group
-    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+    old_groups[index] = new_group
+    assert old_groups == new_groups
+    if check_ui:
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
 

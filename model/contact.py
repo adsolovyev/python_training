@@ -3,46 +3,45 @@ from sys import maxsize
 
 class Contact:
 
-    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, photo=None, title=None,
-                 company=None, address=None, homephone=None, mobilephone=None, workphone=None, fax=None, email=None,
-                 email2=None, email3=None, homepage=None, bday=None, bmonth=None, byear=None, aday=None, amonth=None,
-                 ayear=None, address2=None, secondaryphone=None, notes=None, id=None, all_phones_from_homepage=None,
-                 fullname=None, email1=None):
+    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None,
+                 title=None, company=None, address=None, address2=None, homephone=None, mobilephone=None,
+                 workphone=None, fax=None, email2=None, email3=None, email=None, bday=None, bmonth=None, byear=None,
+                 aday=None, amonth=None, ayear=None, id=None, secondaryphone=None, homepage=None,
+                 all_phones_from_home_page=None, all_emails_from_home_page=None, notes=None, fullname=None):
+        self.id = id
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
         self.nickname = nickname
-        self.photo = photo
         self.title = title
         self.company = company
         self.address = address
         self.homephone = homephone
-        self.mobilephone = mobilephone
         self.workphone = workphone
+        self.mobilephone = mobilephone
+        self.secondaryphone = secondaryphone
         self.fax = fax
         self.email = email
         self.email2 = email2
         self.email3 = email3
-        self.homepage = homepage
+        self.address2 = address2
         self.bday = bday
         self.bmonth = bmonth
         self.byear = byear
         self.aday = aday
         self.amonth = amonth
         self.ayear = ayear
-        self.address2 = address2
-        self.secondaryphone = secondaryphone
         self.notes = notes
-        self.id = id
-        self.all_phones_from_homepage = all_phones_from_homepage
-        self.email1 = email1
+        self.all_phones_from_home_page = all_phones_from_home_page
+        self.all_emails_from_home_page = all_emails_from_home_page
+        self.homepage = homepage
         self.fullname = fullname
 
     def __repr__(self):
-        return "%s:%s %s %s %s" % (self.id, self.firstname, self.lastname, self.email, self.homephone)
+        return "%s: %s %s" % (self.id, self.lastname, self.firstname)
 
     def __eq__(self, other):
-        return (self.id is None or other.id is None or self.id == other.id) \
+        return (self.id is None or other.id is None or self.id == other.id)\
                and self.firstname == other.firstname and self.lastname == other.lastname
 
     def id_or_max(self):
